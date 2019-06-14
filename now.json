@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "env": {
+    "DB_URI": "@db-uri",
+    "WEB_TOKEN_SECRET": "@web-token-secret"
+  },
+  "builds": [{ "src": "build/main.js", "use": "@now/node" }],
+  "routes": [
+    {
+      "src": "(.*)",
+      "dest": "build/main.js",
+      "methods": ["GET", "POST", "DELETE", "PUT", "OPTIONS"]
+    }
+  ]
+}
