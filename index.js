@@ -5,4 +5,6 @@ app.use(express.json())
 
 app.get('/', (req, res) => res.end())
 
-module.exports = app
+module.exports = {
+  default: app,
+}

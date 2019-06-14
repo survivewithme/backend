@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node -e 'require(\"dotenv\").config(); require(\".\").listen(4000)'",
+    "start": "node -e 'require(\"dotenv\").config(); require(\".\").default.listen(4000)'",
     "clean": "rm -r ./build || true",
     "build": "npm run clean && webpack --config webpack.config.js",
     "deploy:ci": "npm run build && now --target production -t $NOW_TOKEN --scope survivewithme",

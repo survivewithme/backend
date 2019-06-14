@@ -10,5 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     filename: 'main.js',
     publicPath: '/',
+    libraryExport: 'default',
+    libraryTarget: 'commonjs2',
   },
 }
