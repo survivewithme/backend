@@ -6,6 +6,10 @@ const CoachSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    passwordHash: {
+      type: String,
+      required: true,
+    },
     firstname: {
       type: String,
       required: false,
@@ -13,7 +17,7 @@ const CoachSchema = new mongoose.Schema(
     lastname: {
       type: String,
       required: false,
-    }
+    },
   }
 )
 

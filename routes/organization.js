@@ -3,11 +3,18 @@ const Organization = mongoose.model('Organization')
 const asyncExpress = require('async-express')
 const auth = require('../middleware/auth')
 const jwt = require('jsonwebtoken')
+const administratorAuth = requrie('../middleware/administratorAuth')
 
 module.exports = (app) => {
-  app.get('/organizations', auth, loadOrganization)
-  app.get('/organizations/invite', inviteLink)
+  app.get('/organizations', administratorAuth, loadOrganization)
+  app.get('/organizations/invite', administratorAuth, inviteLink)
+  app.post('/organizations', administratorAuth, )
 }
+
+const createOrganization = asyncExpress(async (req, res) => {
+  const { _doc } = await Organization.create(req.body)
+  res.json(_doc)
+})
 
 const inviteLink = asyncExpress(async (req, res) => {
   const org = await Organization.findOne({
