@@ -1,12 +1,11 @@
 const express = require('express')
 const asyncExpress = require('async-express')
 const mongoose = require('mongoose')
-require('./models/coach')
 require('./models/organization')
 require('./models/organizationCoach')
 require('./models/user')
 require('./models/userCoach')
-require('./models/administrator')
+require('./models/userAdministrator')
 
 const app = express()
 app.use(express.json())
@@ -25,7 +24,6 @@ app.use(asyncExpress(async (_1, _2, next) => {
   next()
 }))
 
-require('./routes/coach')(app)
 require('./routes/organization')(app)
 require('./routes/user')(app)
 

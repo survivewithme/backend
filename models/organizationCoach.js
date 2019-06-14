@@ -6,7 +6,7 @@ const OrganizationCoachSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
-    coachId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
