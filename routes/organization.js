@@ -31,10 +31,12 @@ const inviteLink = asyncExpress(async (req, res) => {
   const domain = 'https://website-jchancehud.survivewithme.now.sh'
   const token = jwt.sign({
     organizationId: org._id.toString(),
+    referralType: 'organization',
   }, process.env.WEB_TOKEN_SECRET, {
-    expiresIn: 60 * 60,
+    // 5 days
+    expiresIn: 5 * 24 * 60 * 60,
   })
-  res.json({ link: `${domain}/coach/create?token=${token}` })
+  res.json({ link: `${domain}/signup?token=${token}` })
 })
 
 const loadOrganization = asyncExpress(async (req, res) => {
