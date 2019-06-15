@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const Organization = mongoose.model('Organization')
+const OrganizationCoach = mongoose.model('OrganizationCoach')
+const User = mongoose.model('User')
 const asyncExpress = require('async-express')
 const auth = require('../middleware/auth')
 const jwt = require('jsonwebtoken')
@@ -10,7 +12,18 @@ module.exports = (app) => {
   app.get('/organizations/invite', auth, inviteLink)
   app.get('/organizations/list', auth, loadOrganizations)
   app.post('/organizations', auth, createOrganization)
+  app.get('/organizations/coaches', auth, getCoaches)
 }
+
+const getCoaches = asyncExpress(async (req, res) => {
+  const organizationCoaches = await OrganizationCoach.find({}).exec()
+  const users = await User.find({
+    _id: {
+      $in: organizationCoaches.map((obj) => obj.userId),
+    },
+  }).lean().exec()
+  res.json(users)
+})
 
 const generateInviteToken = (organizationId) => {
   const domain = 'https://website.survivewithme.now.sh'

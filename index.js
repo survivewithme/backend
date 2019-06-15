@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 require('./models/organization')
 require('./models/organizationCoach')
 require('./models/user')
-require('./models/userCoach')
 require('./models/userAdministrator')
 
 const app = express()
