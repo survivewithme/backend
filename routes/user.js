@@ -3,6 +3,7 @@ const asyncExpress = require('async-express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const emailValidator = require('email-validator')
+const auth = require('../middleware/auth')
 const User = mongoose.model('User')
 const Organization = mongoose.model('Organization')
 const UserAdministrator = mongoose.model('UserAdministrator')
@@ -12,6 +13,7 @@ module.exports = (app) => {
   app.post('/users', createUser)
   app.post('/users/login', login)
   app.get('/users/invite/parse', parseInviteToken)
+  app.get('/users/admins', auth, loadAdminUsers)
 }
 
 const isAdmin = async (userId) => {
@@ -21,6 +23,16 @@ const isAdmin = async (userId) => {
   return !!admin
 }
 module.exports.isAdmin = isAdmin
+
+const loadAdminUsers = asyncExpress(async (req, res) => {
+  const userAdmins = await UserAdministrator.find({}).lean().exec()
+  const users = await User.find({
+    _id: {
+      $in: userAdmins.map((admin) => admin.userId),
+    }
+  })
+  res.json(users)
+})
 
 const login = asyncExpress(async (req, res) => {
   const email = req.body.email.toLowerCase()

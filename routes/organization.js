@@ -25,10 +25,10 @@ const generateInviteToken = (organizationId) => {
 }
 
 const loadOrganizations = asyncExpress(async (req, res) => {
-  if (!await isAdmin(req.user._id)) {
-    res.status(401).json({ message: 'You must be an admin to do this' })
-    return
-  }
+  // if (!await isAdmin(req.user._id)) {
+  //   res.status(401).json({ message: 'You must be an admin to do this' })
+  //   return
+  // }
   const organizations = await Organization.find({}).lean().exec()
   res.json(organizations.map((organization) => ({
     ...organization,
