@@ -13,7 +13,7 @@ module.exports = (app) => {
 }
 
 const generateInviteToken = (organizationId) => {
-  const domain = 'https://website-jchancehud.survivewithme.now.sh'
+  const domain = 'https://website.survivewithme.now.sh'
   const token = jwt.sign({
     organizationId: organizationId.toString(),
     referralType: 'organization',
