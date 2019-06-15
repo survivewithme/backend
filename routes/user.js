@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const asyncExpress = require('async-express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const emailValidator = require('email-validator')
 const User = mongoose.model('User')
 const Organization = mongoose.model('Organization')
 const UserAdministrator = mongoose.model('UserAdministrator')
@@ -81,7 +82,24 @@ const parseInviteToken = asyncExpress(async (req, res) => {
 })
 
 const createUser = asyncExpress(async (req, res) => {
-  const { token } = req.body
+  const { token, email, password } = req.body
+  if (!emailValidator.validate(email)) {
+    res.status(400).json({ message: 'Invalid email supplied' })
+    return
+  }
+  const existingUser = await User.findOne({
+    email: email.toLowerCase(),
+  }).exec()
+  if (existingUser) {
+    res.status(400).json({ message: 'This email is already in use' })
+    return
+  }
+  if (!password || password.length <= 6) {
+    res.status(400).json({
+      message: 'Ensure your password is more than 6 characters'
+    })
+    return
+  }
   let organizationId
   try {
     const payload = jwt.verify(token, process.env.WEB_TOKEN_SECRET)
@@ -105,6 +123,7 @@ const createUser = asyncExpress(async (req, res) => {
   const passwordHash = await bcrypt.hash(req.body.password, salt)
   const { _doc: user } = await User.create({
     ...req.body,
+    email: req.body.email.toLowerCase(),
     createdAt: new Date(),
     passwordHash,
   })
