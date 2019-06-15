@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const asyncExpress = require('async-express')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = mongoose.model('User')
 const Organization = mongoose.model('Organization')
