@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
 const asyncExpress = require('async-express')
+const auth = require('../middleware/auth')
 const Quiz = mongoose.model('Quiz')
 const QuizAnswer = mongoose.model('QuizAnswer')
 const QuizQuestion = mongoose.model('QuizQuestion')
 
 module.exports = (app) => {
-  app.post('/quizzes', createQuiz)
+  app.post('/quizzes', auth, createQuiz)
   app.get('/quizzes', loadQuizzes)
 }
 
@@ -40,6 +41,7 @@ const createQuiz = asyncExpress(async (req, res) => {
   })
   const questionDocs = await Promise.all(promises)
   const quiz = await Quiz.create({
+    ...req.body,
     questions: questionDocs.map((question) => question._id),
   })
   res.json(quiz)
