@@ -3,4 +3,4 @@ node_js:
   - "10"
 
 script:
-  - test "$TRAVIS_BRANCH" = "master" && npm run deploy:ci
+  - [ "$TRAVIS_BRANCH" != "master" ] && exit || npm run deploy:ci
