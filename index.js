@@ -5,6 +5,7 @@ require('./models/organization')
 require('./models/organizationCoach')
 require('./models/user')
 require('./models/userAdministrator')
+require('./models/quiz')
 
 const app = express()
 app.use(express.json())
@@ -25,6 +26,7 @@ app.use(asyncExpress(async (_1, _2, next) => {
 
 require('./routes/organization')(app)
 require('./routes/user')(app)
+require('./routes/quiz')(app)
 
 module.exports = {
   default: app,
