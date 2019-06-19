@@ -4,11 +4,29 @@ const auth = require('../middleware/auth')
 const Quiz = mongoose.model('Quiz')
 const QuizAnswer = mongoose.model('QuizAnswer')
 const QuizQuestion = mongoose.model('QuizQuestion')
+const _ = require('lodash')
 
 module.exports = (app) => {
   app.post('/quizzes', auth, createQuiz)
-  app.get('/quizzes', loadQuizzes)
+  app.get('/quizzes', auth, loadQuizzes)
+  app.get('/quizzes/daily', auth, loadDailyQuiz)
 }
+
+const loadDailyQuiz = asyncExpress(async (req, res) => {
+  const quizzes = await Quiz.find({
+    _id: mongoose.Types.ObjectId('5d096d20e527d44b5ee2249a'),
+  })
+    .populate('questions')
+    .populate({
+      path: 'questions',
+      populate: {
+        path: 'answers',
+        model: 'QuizAnswer',
+      },
+    })
+    .exec()
+  res.json(_.sample(quizzes))
+})
 
 const loadQuizzes = asyncExpress(async (req, res) => {
   const quizzes = await Quiz.find({})
