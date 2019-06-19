@@ -6,6 +6,7 @@ require('./models/organizationCoach')
 require('./models/user')
 require('./models/userAdministrator')
 require('./models/quiz')
+require('./models/userQuizAnswer')
 
 const app = express()
 app.use(express.json())

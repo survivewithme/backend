@@ -4,13 +4,24 @@ const auth = require('../middleware/auth')
 const Quiz = mongoose.model('Quiz')
 const QuizAnswer = mongoose.model('QuizAnswer')
 const QuizQuestion = mongoose.model('QuizQuestion')
+const UserQuizAnswer = mongoose.model('UserQuizAnswer')
 const _ = require('lodash')
 
 module.exports = (app) => {
   app.post('/quizzes', auth, createQuiz)
   app.get('/quizzes', auth, loadQuizzes)
   app.get('/quizzes/daily', auth, loadDailyQuiz)
+  app.post('/quizzes/answer', auth, submitAnswer)
 }
+
+const submitAnswer = asyncExpress(async (req, res) => {
+  await UserQuizAnswer.create({
+    createdAt: new Date(),
+    userId: req.user._id,
+    ...req.body,
+  })
+  res.status(204).end()
+})
 
 const loadDailyQuiz = asyncExpress(async (req, res) => {
   const quizzes = await Quiz.find({
