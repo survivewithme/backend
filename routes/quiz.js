@@ -25,6 +25,7 @@ module.exports = (app) => {
   app.post('/quizzes/answer', auth, submitAnswer)
   app.get('/questions/daily', auth, loadDailyQuestion)
   app.get('/questions/daily/completed', auth, dailyQuestionCompleted)
+  app.get('/quizzes/daily/answers', auth, loadDailyAnswers)
 }
 
 const submitAnswer = asyncExpress(async (req, res) => {
@@ -34,6 +35,18 @@ const submitAnswer = asyncExpress(async (req, res) => {
     ...req.body,
   })
   res.status(204).end()
+})
+
+const loadDailyAnswers = asyncExpress(async (req, res) => {
+  const answers = await UserQuizAnswer.find({
+    quizId: COMPOSITE_QUIZ_ID,
+    userId: req.user._id,
+  })
+    .sort({ createdAt: 'desc' })
+    .populate('answer')
+    .lean()
+    .exec()
+  res.json(answers)
 })
 
 const dailyQuestionCompleted = asyncExpress(async (req, res) => {

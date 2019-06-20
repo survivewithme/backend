@@ -25,4 +25,11 @@ const UserQuizAnswerSchema = new mongoose.Schema(
   }
 )
 
+UserQuizAnswerSchema.virtual('answer', {
+  ref: 'QuizAnswer',
+  localField: 'answerId',
+  foreignField: '_id',
+  justOne: true,
+})
+
 module.exports = mongoose.model('UserQuizAnswer', UserQuizAnswerSchema)
